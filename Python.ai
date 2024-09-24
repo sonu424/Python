@@ -1,0 +1,385 @@
+1. Write a program to implement hill climbing algorithm using python.
+
+import random
+
+def objective_function(solution):
+
+value
+
+ return sum(solution)
+
+def generate_neighbor(current_solution):
+
+ current solution
+
+ solution
+
+ neighbor = current_solution[:]
+
+ index = random.randint(0, len(neighbor) - 1)
+
+ neighbor[index] = 1 - neighbor[index] # Flip the value at the selected index
+
+ return neighbor
+
+def hill_climbing():
+
+ current_solution = [random.randint(0, 1) for _ in range(10)] # Generate an initial solution
+
+ current_fitness = objective_function(current_solution)
+
+ # Iterative process
+
+ while True:
+
+ neighbor = generate_neighbor(current_solution)
+
+ neighbor_fitness = objective_function(neighbor)
+
+ # Comparison
+
+ if neighbor_fitness >= current_fitness:
+
+ current_solution = neighbor
+
+ current_fitness = neighbor_fitness
+
+ else:
+
+ break 
+
+ return current_solution, current_fitness
+
+best_solution, best_fitness = hill_climbing()
+
+print("Best Solution:", best_solution)
+
+print("Best Fitness:", best_fitness)
+
+
+
+
+2. Write program to implement Iterative deepening depth-first search python
+
+from collections import deque
+
+def iterative_deepening_dfs(graph, start, goal):
+
+ for depth in range(1, len(graph) + 1):
+
+ result = dls(graph, start, goal, depth)
+
+ if result is not None:
+
+ return result
+
+ return None
+
+def dls(graph, start, goal, depth):
+
+ stack = deque([(start, [start], 0)])
+
+ while stack:
+
+ node, path, current_depth = stack.pop()
+
+ if node == goal:
+
+ return path
+
+ if current_depth < depth:
+
+ for neighbor in graph[node]:
+
+ if neighbor not in path:
+
+ stack.append((neighbor, path + [neighbor], current_depth + 1))
+
+ return None
+
+graph = {
+
+ 'A': ['B', 'D'],
+
+ 'B': ['A', 'C', 'G','E'],
+
+ 'C': ['B','F'],
+
+ 'D': ['A', 'E','G'],
+
+ 'E': ['F','B'],
+
+ 'F': ['E','C','G'],
+
+ 'G':['F','B','D']
+
+}
+
+start_node = 'A'
+
+goal_node = 'G'
+
+result = iterative_deepening_dfs(graph, start_node, goal_node)
+
+if result is not None:
+
+ print("Path found:", " -> ".join(result))
+
+else:
+
+ print("No path found")
+
+
+
+
+3. Write a program to implement Depth Limit Search
+
+from collections import deque
+
+def dls(graph, start, depth):
+
+ stack = deque([(start, [start], 0)])
+
+ while stack:
+
+ node, path, current_depth = stack.pop()
+
+ if current_depth < depth:
+
+ for neighbor in graph[node]:
+
+ if neighbor not in path:
+
+ stack.append((neighbor, path + [neighbor], current_depth + 1))
+
+ return path
+
+graph = {
+
+ 'A': ['B', 'D'],
+
+ 'B': ['A', 'C', 'G','E'],
+
+ 'C': ['B','F'],
+
+ 'D': ['A', 'E','G'],
+
+ 'E': ['F','B'],
+
+ 'F': ['E','C','G'],
+
+ 'G':['F','B','D']
+
+}
+
+start_node = 'A'
+
+depth=1
+
+result = dls(graph, start_node,depth)
+
+if result is not None:
+
+ print("Path found:", " -> ".join(result))
+
+else:
+
+ print("No path found")
+
+
+
+
+
+
+4. Write a program to implement Find-S algorithm using python
+
+# Training dataset
+
+training_data = [
+
+ (['Yes', 'Yes'], 'Dog'),
+
+ (['Yes', 'No'], 'Cat'),
+
+ (['No', 'Yes'], 'Dog'),
+
+ (['No', 'No'], 'Cat'),
+
+ (['Yes', 'Yes'], 'Dog')
+
+]
+
+# Initial hypothesis
+
+h = ['∅', '∅']
+
+# Find-S algorithm
+
+for example, label in training_data:
+
+ if label == 'Dog':
+
+ for i in range(len(example)):
+
+ if h[i] == '∅':
+
+ h[i] = example[i]
+
+ elif h[i] != example[i]:
+
+ h[i] = '?'
+
+print("Final hypothesis:", h)
+
+
+
+
+
+5. Write a program to implement Forward Chaining example
+
+class ForwardChaining:
+
+ def __init__(self, rules, facts):
+
+ self.rules = rules
+
+ self.facts = facts
+
+ def run(self):
+
+ new_facts = True
+
+ while new_facts:
+
+ new_facts = False
+
+ for conditions, result in self.rules:
+
+ if all(cond in self.facts for cond in conditions) and result not in self.facts:
+
+ self.facts.add(result)
+
+ new_facts = True
+
+ print(f"Derived fact: {result}")
+
+ return self.facts
+
+# Example usage
+
+rules = [(("A",), "B"), (("B",), "C"), (("C",), "D"), (("A", "D"), "E")]
+
+facts = {"A"}
+
+fc = ForwardChaining(rules, facts)
+
+derived_facts = fc.run()
+
+print("Final derived facts:", derived_facts) 
+
+
+
+
+
+
+
+
+6. Write a program to implement Backward Chaining example
+
+class BackwardChaining:
+
+ def __init__(self, rules, facts):
+
+ self.rules = rules
+
+ self.facts = facts
+
+ def is_true(self, goal):
+
+ if goal in self.facts:
+
+ return True
+
+ for conditions, result in self.rules:
+
+ if result == goal:
+
+ if all(self.is_true(cond) for cond in conditions):
+
+ self.facts.add(goal)
+
+ return True
+
+ return False
+
+# Example usage
+
+rules = [(("A",), "B"), (("B",), "C"), (("C",), "D"), (("A", "D"), "E")]
+
+facts = {"A"}
+
+bc = BackwardChaining(rules, facts)
+
+goal = "E"
+
+result = bc.is_true(goal)
+
+print(f"Can we derive {goal}? {result}")
+
+
+
+
+
+
+
+
+
+7. Write a program to implement Simple Chatbot Program using python
+
+class SimpleChatbot:
+
+ def __init__(self):
+
+ self.responses = {
+
+ "hello": "Hi there!",
+
+ "how are you": "I'm a bot, but I'm doing well. How can I help you?",
+
+ "name": "I'm a simple chatbot.",
+
+ "pesiams":"PES Institute of Advanced Management Studies",
+
+ "bye": "Goodbye! Have a great day!"
+
+ }
+
+ def get_response(self, user_input):
+
+ user_input = user_input.lower()
+
+ for keyword in self.responses:
+
+ if keyword in user_input:
+
+ return self.responses[keyword]
+
+ return "I'm sorry, I don't understand that."
+
+if __name__ == "__main__":
+
+ bot = SimpleChatbot()
+
+ print("Chatbot: Hello! How can I assist you today?")
+
+ while True:
+
+ user_input = input("You: ")
+
+ if "bye" in user_input.lower():
+
+ print("Chatbot:", bot.get_response("bye"))
+
+ break
+
+ print("Chatbot:", bot.get_response(user_input))
